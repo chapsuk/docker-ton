@@ -15,14 +15,13 @@ RUN apk add --no-cache --update \
     dumb-init \
     su-exec
 
-ADD https://test.ton.org/ton-test-liteclient-full.tar.xz /ton/sources.tar.xz
 RUN \
+    mkdir -p /ton/liteclient-build && \
     cd /ton && \
-    tar xvf sources.tar.xz && \
-    wget https://test.ton.org/ton-lite-client-test1.config.json -O lite.config.json
-
-WORKDIR /ton/liteclient-build
-RUN \
+    wget -O /ton/source.tar.xz https://test.ton.org/ton-test-liteclient-full.tar.xz && \
+    tar xvf source.tar.xz && \
+    wget -O /ton/lite.config.json https://test.ton.org/ton-lite-client-test1.config.json && \
+    cd /ton/liteclient-build && \
     cmake /ton/lite-client && \
     cmake --build . --target lite-client && \
     cmake --build . --target fift && \
@@ -30,10 +29,9 @@ RUN \
     cp /ton/liteclient-build/lite-client/lite-client /usr/local/bin/lite-client && \
     cp /ton/liteclient-build/crypto/fift /usr/local/bin/fift && \
     cp /ton/liteclient-build/crypto/func /usr/local/bin/func && \
-    rm -rf /ton/lite-client /ton/liteclient-build/ /ton/sources.tar.xz
-
-RUN \
-    addgroup ton && \
+    rm -rf /ton/lite-client /ton/liteclient-build/ /ton/source.tar.xz
+    
+RUN addgroup ton && \
     adduser -S -G ton ton && \
     chown -R ton:ton /ton
 

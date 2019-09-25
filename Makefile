@@ -1,5 +1,5 @@
 LITE_CLIENT_IMAGE=chapsuk/ton-lite-client
-LITE_CLIENT_VERSION=0.1.0
+LITE_CLIENT_VERSION?=0.1.1
 LITE_DOCKERFILE=lite-client/Dockerfile
 LITE_BUILD_CONTEXT=lite-client/
 
